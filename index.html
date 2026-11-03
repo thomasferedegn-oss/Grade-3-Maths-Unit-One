@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የ3ኛ ክፍል የሂሳብ ምዘና | Grade 3 Mathematics Assessment</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans Ethiopic', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .ethiopic {
+            font-family: 'Noto Sans Ethiopic', sans-serif;
+        }
+        /* Custom smooth transition */
+        .quiz-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Custom scrollbar for question palette */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <!-- Top App Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-100">
+                    <i class="fa-solid fa-shapes text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold text-slate-800 leading-tight ethiopic">ምዕራፍ 1፡ የሂሳብ ምዘና (Grade 3)</h1>
+                    <p class="text-xs text-slate-500 ethiopic">እስከ 10,000 ያሉ ሙሉ ቁጥሮችና ቅደም ተከተላቸው</p>
+                </div>
+            </div>
+
+            <!-- Narrator & Status Badges -->
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <button id="voiceToggleBtn" onclick="toggleSpeech()" class="flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition shadow-sm" title="Toggle British Voice Narrator">
+                    <i id="voiceIcon" class="fa-solid fa-volume-high"></i>
+                    <span class="hidden md:inline" id="voiceStatusText">Narrator (UK Female): ON</span>
+                </button>
+                <div id="studentPill" class="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs bg-slate-100 text-slate-700 border border-slate-200">
+                    <i class="fa-regular fa-user text-slate-400"></i>
+                    <span id="pillName" class="font-medium truncate max-w-[120px]">ተማሪ</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
+
+        <!-- STEP 1: Registration View -->
+        <section id="registrationView" class="quiz-card bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-100 max-w-2xl mx-auto w-full">
+            <div class="text-center mb-8">
+                <div class="inline-flex p-3 rounded-2xl bg-indigo-50 text-indigo-600 mb-3">
+                    <i class="fa-solid fa-graduation-cap text-3xl"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 ethiopic">የተማሪ መለያ ቅጽ</h2>
+                <p class="text-slate-500 text-sm mt-1 ethiopic">ፈተናውን ለመጀመር እባክዎ ሙሉ መረጃዎን በትክክል ያስገቡ</p>
+            </div>
+
+            <form id="studentForm" onsubmit="startAssessment(event)" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5 ethiopic">የተማሪ ሙሉ ስም (Student Full Name) <span class="text-rose-500">*</span></label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-regular fa-id-card"></i>
+                        </span>
+                        <input type="text" id="studentNameInput" required placeholder="ምሳሌ፡ ዮናስ አበበ" class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 placeholder:text-slate-400 outline-none text-sm transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5 ethiopic">መለያ ቁጥር (Student ID) <span class="text-rose-500">*</span></label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-hashtag"></i>
+                            </span>
+                            <input type="text" id="studentIdInput" required placeholder="ምሳሌ፡ G3-042" class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 placeholder:text-slate-400 outline-none text-sm transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5 ethiopic">ክፍል (Section/Class)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-chalkboard-user"></i>
+                            </span>
+                            <input type="text" id="studentClassInput" value="3ኛ (Grade 3)" class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl bg-slate-50 text-slate-700 outline-none text-sm cursor-not-allowed" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50/70 border border-indigo-100 rounded-2xl p-4 text-xs text-indigo-900 space-y-1.5 ethiopic">
+                    <p class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-info text-indigo-600"></i> ፈተናውን በተመለከተ አጭር መመሪያ፡</p>
+                    <ul class="list-disc list-inside space-y-1 text-indigo-800/90 pl-1">
+                        <li>ምርጫዎችን ሲመርጡ ወዲያውኑ መልሱ ትክክል ወይም ስህተት መሆኑን ያሳውቃል።</li>
+                        <li>መልስ አንዴ ከመረጡ በኋላ መቀየር አይቻልም (Irreversible Locking)።</li>
+                        <li>ለእያንዳንዱ ጥያቄ ዝርዝር የአማርኛ ማብራሪያ ተዘጋጅቷል።</li>
+                        <li>ውጤትዎ እንደጨረሱ በራስ-ሰር ተሰልቶ ወደ መምህሩ ኢሜል ይላካል።</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg shadow-indigo-200 flex items-center justify-center space-x-2 text-base ethiopic">
+                    <span>ምዘናውን ጀምር (Start Quiz)</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </section>
+
+        <!-- STEP 2: Main Interactive Quiz Arena -->
+        <section id="quizView" class="hidden flex-col gap-6 w-full">
+            
+            <!-- Progress Bar & Question Info Header -->
+            <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div id="sectionBadge" class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1.5 rounded-lg ethiopic">
+                        ክፍል 1፡ የማዛመድ
+                    </div>
+                    <div>
+                        <span class="text-xs uppercase tracking-wider font-semibold text-slate-400">ጥያቄ</span>
+                        <div class="text-lg font-extrabold text-slate-800">
+                            <span id="currentQuestionNum">1</span> <span class="text-slate-400 text-sm font-normal">/</span> <span id="totalQuestionsNum" class="text-slate-400 text-sm font-normal">52</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress indicators -->
+                <div class="flex-1 max-w-md mx-auto md:mx-0 w-full">
+                    <div class="flex justify-between text-xs font-semibold text-slate-500 mb-1.5">
+                        <span class="ethiopic">የምዘና ሂደት</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div id="progressBar" class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <!-- Instant Score Counter -->
+                <div class="flex items-center gap-3 justify-end">
+                    <div class="px-3.5 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-1.5">
+                        <i class="fa-regular fa-circle-check text-emerald-600"></i>
+                        <span>ትክክል: <span id="correctCounter">0</span></span>
+                    </div>
+                    <div class="px-3.5 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold flex items-center gap-1.5">
+                        <i class="fa-regular fa-circle-xmark text-rose-600"></i>
+                        <span>ስህተት: <span id="incorrectCounter">0</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200/80 relative overflow-hidden">
+                
+                <!-- Audio Narrator Floating Button -->
+                <div class="flex justify-between items-start gap-3 mb-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                        <i class="fa-solid fa-list-check text-slate-500"></i>
+                        <span id="questionCategoryTitle" class="ethiopic">ክፍል</span>
+                    </div>
+
+                    <button onclick="narrateCurrentQuestion()" class="flex items-center gap-1.5 px-3 py-1.5 bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 rounded-xl text-xs font-semibold transition" title="Listen to question in British English">
+                        <i class="fa-solid fa-ear-listen"></i>
+                        <span class="hidden sm:inline">አንብብ (Read Aloud)</span>
+                    </button>
+                </div>
+
+                <!-- Question Prompt -->
+                <div class="mb-6">
+                    <h3 id="questionPrompt" class="text-lg sm:text-xl font-bold text-slate-900 leading-relaxed ethiopic">
+                        <!-- Loaded dynamically -->
+                    </h3>
+                    <p id="questionContext" class="text-sm text-slate-500 mt-1 ethiopic hidden">
+                        <!-- Sub notes if needed -->
+                    </p>
+                </div>
+
+                <!-- Options / Interactive Area -->
+                <div id="interactiveArea" class="space-y-3">
+                    <!-- Loaded dynamically based on question type -->
+                </div>
+
+                <!-- Instant Feedback & Detailed Amharic Explanation Box -->
+                <div id="explanationContainer" class="hidden mt-6 pt-5 border-t border-slate-100 animate-fadeIn">
+                    <div id="feedbackBanner" class="p-4 rounded-2xl flex items-start gap-3.5 mb-3">
+                        <!-- Injected via script: Success or Warning -->
+                    </div>
+                    <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-amber-900 flex items-center gap-1.5 mb-1 ethiopic">
+                            <i class="fa-solid fa-lightbulb text-amber-600"></i> የተብራራ የአማርኛ ማብራሪያ (Detailed Explanation)
+                        </h4>
+                        <div id="explanationText" class="text-sm text-amber-950/90 leading-relaxed ethiopic">
+                            <!-- Injected Amharic Explanation -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Quiz Controls (Bottom Navigation) -->
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <button id="prevBtn" onclick="navigateQuestion(-1)" class="px-5 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 text-sm font-semibold flex items-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span class="ethiopic">ወደ ኋላ (Back)</span>
+                </button>
+
+                <div class="flex items-center gap-2">
+                    <button id="skipBtn" onclick="skipQuestion()" class="px-4 py-2.5 rounded-xl border border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-800 text-sm font-semibold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-forward-step"></i>
+                        <span class="ethiopic">ዝለል (Skip)</span>
+                    </button>
+                    <button id="nextBtn" onclick="navigateQuestion(1)" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold flex items-center gap-2 shadow-md shadow-indigo-100 transition">
+                        <span class="ethiopic">ቀጣይ (Next)</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button id="submitExamBtn" onclick="submitAssessmentModal()" class="hidden px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold flex items-center gap-2 shadow-md shadow-emerald-100 transition ethiopic">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>ፈተናውን ጨርስ (Submit)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question Jump Drawer / Palette -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider ethiopic">የጥያቄዎች ማውጫ (Question Palette)</span>
+                    <span class="text-xs text-slate-400">ጠቅ በማድረግ ጥያቄዎችን መዝለል ይችላሉ</span>
+                </div>
+                <div id="questionGrid" class="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
+                    <!-- Injected numbers dynamically -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- STEP 3: Results & Teacher Notification Dashboard -->
+        <section id="resultsView" class="hidden quiz-card bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-slate-100 max-w-3xl mx-auto w-full">
+            <div class="text-center mb-8">
+                <div id="resultIconBadge" class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl mb-4 shadow-lg">
+                    <!-- Icon based on passing/failing -->
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 ethiopic">የፈተና ውጤት ማጠቃለያ</h2>
+                <p id="resultFeedbackHeadline" class="text-sm font-medium text-slate-600 mt-1 ethiopic"></p>
+            </div>
+
+            <!-- Performance Card Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 text-center">
+                    <span class="text-xs text-slate-500 font-medium ethiopic">አጠቃላይ ጥያቄዎች</span>
+                    <div id="resTotalQ" class="text-xl font-black text-slate-800 mt-0.5">52</div>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-3.5 text-center">
+                    <span class="text-xs text-emerald-600 font-medium ethiopic">ትክክለኛ መልሶች</span>
+                    <div id="resCorrectQ" class="text-xl font-black text-emerald-700 mt-0.5">0</div>
+                </div>
+                <div class="bg-rose-50 border border-rose-200/80 rounded-2xl p-3.5 text-center">
+                    <span class="text-xs text-rose-600 font-medium ethiopic">የተሳሳቱ መልሶች</span>
+                    <div id="resWrongQ" class="text-xl font-black text-rose-700 mt-0.5">0</div>
+                </div>
+                <div class="bg-indigo-50 border border-indigo-200/80 rounded-2xl p-3.5 text-center">
+                    <span class="text-xs text-indigo-600 font-medium ethiopic">የመቶኛ ውጤት</span>
+                    <div id="resPercentage" class="text-xl font-black text-indigo-700 mt-0.5">0%</div>
+                </div>
+            </div>
+
+            <!-- Student ID & Teacher Meta Box -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 mb-8">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 ethiopic">የፈተናው ዝርዝር መረጃ (Assessment Dossier)</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
+                    <div><span class="font-bold text-slate-900 ethiopic">የተማሪ ስም:</span> <span id="resStudentName">---</span></div>
+                    <div><span class="font-bold text-slate-900 ethiopic">የተማሪ መለያ:</span> <span id="resStudentID">---</span></div>
+                    <div><span class="font-bold text-slate-900 ethiopic">ክፍል:</span> Grade 3 (3ኛ ክፍል)</div>
+                    <div><span class="font-bold text-slate-900 ethiopic">የተፈተነበት ቀን:</span> <span id="resExamDate">---</span></div>
+                    <div class="sm:col-span-2"><span class="font-bold text-slate-900 ethiopic">የመምህር ኢሜይል:</span> <span class="text-indigo-600 font-mono">mesayferedegn2@gmail.com</span></div>
+                </div>
+            </div>
+
+            <!-- Email Notification Action Section -->
+            <div class="bg-gradient-to-r from-indigo-900 to-indigo-800 rounded-2xl p-5 text-white shadow-lg mb-8">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-center sm:text-left">
+                        <h4 class="font-bold text-base flex items-center justify-center sm:justify-start gap-2 ethiopic">
+                            <i class="fa-solid fa-envelope-circle-check text-emerald-400"></i> ውጤትን ለመምህሩ ይላኩ
+                        </h4>
+                        <p class="text-xs text-indigo-200 mt-1 ethiopic">ይህንን ቁልፍ ሲጫኑ ሙሉ የውጤት ሪፖርቱ ወደ መምህር መሳይ ፈረደኝ (mesayferedegn2@gmail.com) ይላካል።</p>
+                    </div>
+                    <button id="sendEmailBtn" onclick="dispatchTeacherEmail()" class="whitespace-nowrap px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-md transition duration-200 flex items-center gap-2 ethiopic">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>ኢሜይል ላክ (Send Email)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Review / Retake Actions -->
+            <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="toggleReviewSection()" class="px-5 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold flex items-center gap-2 transition ethiopic">
+                    <i class="fa-solid fa-clipboard-check text-indigo-600"></i>
+                    <span id="reviewToggleText">ሁሉንም ጥያቄዎችና ማብራሪያዎች ከልስ (Review Questions)</span>
+                </button>
+                <button onclick="restartQuiz()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-sm font-semibold flex items-center gap-2 transition ethiopic">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>እንደገና ጀምር (Restart)</span>
+                </button>
+            </div>
+
+            <!-- Review Collapsible Box -->
+            <div id="fullReviewContainer" class="hidden mt-8 pt-6 border-t border-slate-200 space-y-4">
+                <h3 class="text-base font-extrabold text-slate-800 ethiopic">የሁሉም ጥያቄዎች ዝርዝር ክለሳ</h3>
+                <div id="reviewItemsWrapper" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                    <!-- Dynamic review items generated -->
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-400 ethiopic">
+        የ3ኛ ክፍል የሂሳብ ምዘና ስርዓት &bull; Grade 3 Mathematics Assessment System
+    </footer>
+
+    <!-- Modal Dialog System (Replacing alert/confirm) -->
+    <div id="customModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-sm w-full shadow-2xl border border-slate-100 transform transition-all text-center">
+            <div id="modalIconWrap" class="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl mb-4 bg-indigo-50 text-indigo-600">
+                <i id="modalIcon" class="fa-solid fa-circle-question"></i>
+            </div>
+            <h3 id="modalTitle" class="text-lg font-bold text-slate-900 mb-2 ethiopic">ማረጋገጫ</h3>
+            <p id="modalMessage" class="text-sm text-slate-600 mb-6 ethiopic leading-relaxed">መልእክት</p>
+            <div id="modalButtons" class="flex gap-2 justify-center">
+                <!-- Injected buttons -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        /**
+         * COMPREHENSIVE QUESTION DATASET
+         * Sourced directly from Grade_3_Math_Unit_1_Assessment updated.docx
+         * Options and correct answers have been reshuffled across positions
+         * (ሀ, ሁ, ሐ, መ / A, B, C, D) to avoid repetitive patterns.
+         */
+        const quizData = [
+            // PART 1: MATCHING (5 Items)
+            {
+                id: 1,
+                section: "ክፍል 1፡ የማዛመድ ጥያቄዎች (Matching)",
+                type: "matching",
+                prompt: "ለቁጥር 5600 ትክክለኛውን የተበተነ ፎርም ወይም ማብራሪያ ከ 'ሁ' ረድፍ ምረጡ፡",
+                englishPrompt: "Match the number 5600 with its corresponding expanded representation.",
+                columnA: "5600",
+                options: [
+                    { id: "A", text: "ሀ. 6 ሺዎች፣ 7 መቶዎች፣ 8 አስሮች እና 0 አንዶች" },
+                    { id: "B", text: "ሁ. (2 × 1000) + (5 × 10) + 7" },
+                    { id: "C", text: "ሐ. 5 ሺዎች እና 6 መቶዎች" },
+                    { id: "D", text: "መ. (6 × 1000) + (7 × 100) + (3 × 10) + 4" },
+                    { id: "E", text: "ሠ. 8 ሺዎች፣ 0 መቶዎች፣ 8 አስሮች እና 6 አንዶች" }
+                ],
+                correctAnswer: "C",
+                explanation: "5600 ማለት 5 የሺህ ቤት (5 ሺዎች = 5000) እና 6 የመቶ ቤት (6 መቶዎች = 600) አሉት፤ ስለዚህ መልሱ 'ሐ' (5 ሺዎች እና 6 መቶዎች) ነው።"
+            },
+            {
+                id: 2,
+                section: "ክፍል 1፡ የማዛመድ ጥያቄዎች (Matching)",
+                type: "matching",
+                prompt: "ለቁጥር 6780 ትክክለኛውን የተበተነ ፎርም ወይም ማብራሪያ ከ 'ሁ' ረድፍ ምረጡ፡",
+                englishPrompt: "Match the number 6780 with its corresponding representation.",
+                columnA: "6780",
+                options: [
+                    { id: "A", text: "ሀ. (6 × 1000) + (7 × 100) + (3 × 10) + 4" },
+                    { id: "B", text: "ሁ. (2 × 1000) + (5 × 10) + 7" },
+                    { id: "C", text: "ሐ. 5 ሺዎች እና 6 መቶዎች" },
+                    { id: "D", text: "መ. 6 ሺዎች፣ 7 መቶዎች፣ 8 አስሮች እና 0 አንዶች" },
+                    { id: "E", text: "ሠ. 8 ሺዎች፣ 0 መቶዎች፣ 8 አስሮች እና 6 አንዶች" }
+                ],
+                correctAnswer: "D",
+                explanation: "በ 6780 ውስጥ 6 ሺህ፣ 7 መቶ፣ 8 አስር እና 0 አንድ አለ። ስለዚህ ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 3,
+                section: "ክፍል 1፡ የማዛመድ ጥያቄዎች (Matching)",
+                type: "matching",
+                prompt: "ለቁጥር 6734 ትክክለኛውን የተበተነ ፎርም ወይም ማብራሪያ ከ 'ሁ' ረድፍ ምረጡ፡",
+                englishPrompt: "Match the number 6734 with its correct expanded notation.",
+                columnA: "6734",
+                options: [
+                    { id: "A", text: "ሀ. 8 ሺዎች፣ 0 መቶዎች፣ 8 አስሮች እና 6 አንዶች" },
+                    { id: "B", text: "ሁ. (6 × 1000) + (7 × 100) + (3 × 10) + 4" },
+                    { id: "C", text: "ሐ. (2 × 1000) + (5 × 10) + 7" },
+                    { id: "D", text: "መ. 5 ሺዎች እና 6 መቶዎች" },
+                    { id: "E", text: "ሠ. 6 ሺዎች፣ 7 መቶዎች፣ 8 አስሮች እና 0 አንዶች" }
+                ],
+                correctAnswer: "B",
+                explanation: "6734 ሲበተን (6 × 1000) + (7 × 100) + (3 × 10) + 4 ስለሚሆን ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 4,
+                section: "ክፍል 1፡ የማዛመድ ጥያቄዎች (Matching)",
+                type: "matching",
+                prompt: "ለቁጥር 2057 ትክክለኛውን የተበተነ ፎርም ወይም ማብራሪያ ከ 'ሁ' ረድፍ ምረጡ፡",
+                englishPrompt: "Match the number 2057 with its expanded form.",
+                columnA: "2057",
+                options: [
+                    { id: "A", text: "ሀ. 6 ሺዎች፣ 7 መቶዎች፣ 8 አስሮች እና 0 አንዶች" },
+                    { id: "B", text: "ሁ. 5 ሺዎች እና 6 መቶዎች" },
+                    { id: "C", text: "ሐ. 8 ሺዎች፣ 0 መቶዎች፣ 8 አስሮች እና 6 አንዶች" },
+                    { id: "D", text: "መ. (6 × 1000) + (7 × 100) + (3 × 10) + 4" },
+                    { id: "E", text: "ሠ. (2 × 1000) + (5 × 10) + 7" }
+                ],
+                correctAnswer: "E",
+                explanation: "2057 የመቶ ቤት 0 ስለሆነ (2 × 1000) + (5 × 10) + 7 ይሆናል። ስለዚህ ትክክለኛው መልስ 'ሠ' ነው።"
+            },
+            {
+                id: 5,
+                section: "ክፍል 1፡ የማዛመድ ጥያቄዎች (Matching)",
+                type: "matching",
+                prompt: "ለቁጥር 8086 ትክክለኛውን የተበተነ ፎርም ወይም ማብራሪያ ከ 'ሁ' ረድፍ ምረጡ፡",
+                englishPrompt: "Match the number 8086 with its expanded description.",
+                columnA: "8086",
+                options: [
+                    { id: "A", text: "ሀ. 8 ሺዎች፣ 0 መቶዎች፣ 8 አስሮች እና 6 አንዶች" },
+                    { id: "B", text: "ሁ. (2 × 1000) + (5 × 10) + 7" },
+                    { id: "C", text: "ሐ. 5 ሺዎች እና 6 መቶዎች" },
+                    { id: "D", text: "መ. (6 × 1000) + (7 × 100) + (3 × 10) + 4" },
+                    { id: "E", text: "ሠ. 6 ሺዎች፣ 7 መቶዎች፣ 8 አስሮች እና 0 አንዶች" }
+                ],
+                correctAnswer: "A",
+                explanation: "8086 ማለት 8 ሺዎች፣ 0 መቶዎች፣ 8 አስሮች እና 6 አንዶች ስለሆነ መልሱ 'ሀ' ነው።"
+            },
+
+            // PART 2: TRUE / FALSE (5 Items)
+            {
+                id: 6,
+                section: "ክፍል 2፡ እውነት ወይም ሐሰት (True or False)",
+                type: "boolean",
+                prompt: "ሁለት ሙሉ ቁጥሮች የተለያዩ የሆሄያት (አሃዞች) ብዛት ካሏቸው፣ ብዙ አሃዞች ያሉት ቁጥር ይበልጣል።",
+                englishPrompt: "True or False: If two whole numbers have different numbers of digits, the one with more digits is greater.",
+                options: [
+                    { id: "T", text: "እውነት (True)" },
+                    { id: "F", text: "ሐሰት (False)" }
+                ],
+                correctAnswer: "T",
+                explanation: "ይህ ዓረፍተ ነገር እውነት ነው። ሁለት ሙሉ ቁጥሮች ሲነጻጸሩ ብዙ አሃዝ ያለው ቁጥር ምንጊዜም አነስተኛ አሃዝ ካለው ቁጥር ይበልጣል (ለምሳሌ 100 ከ 99 ይበልጣል)።"
+            },
+            {
+                id: 7,
+                section: "ክፍል 2፡ እውነት ወይም ሐሰት (True or False)",
+                type: "boolean",
+                prompt: "4561 < 2345 ነው።",
+                englishPrompt: "True or False: 4561 is less than 2345.",
+                options: [
+                    { id: "T", text: "እውነት (True)" },
+                    { id: "F", text: "ሐሰት (False)" }
+                ],
+                correctAnswer: "F",
+                explanation: "ሐሰት ነው። 4561 እና 2345 ሲነፃፀሩ የ 4561 ሺህ ቤት (4) ከ 2345 ሺህ ቤት (2) ስለሚበልጥ 4561 > 2345 መሆን ነበረበት።"
+            },
+            {
+                id: 8,
+                section: "ክፍል 2፡ እውነት ወይም ሐሰት (True or False)",
+                type: "boolean",
+                prompt: "ቁጥር 2364 ወደ ቅርብ 10 ቤት ሲጠጋ 2360 ይሆናል።",
+                englishPrompt: "True or False: 2364 rounded to the nearest ten is 2360.",
+                options: [
+                    { id: "T", text: "እውነት (True)" },
+                    { id: "F", text: "ሐሰት (False)" }
+                ],
+                correctAnswer: "T",
+                explanation: "እውነት ነው። ወደ ቅርብ 10 ቤት ስናጠጋጋ የአንድ ቤት አሃዝ 4 ስለሆነ (ከ 5 ያነሰ) የአንድ ቤት አሃዝ ወደ 0 ይቀየራል፤ 2360 ይሆናል።"
+            },
+            {
+                id: 9,
+                section: "ክፍል 2፡ እውነት ወይም ሐሰት (True or False)",
+                type: "boolean",
+                prompt: "ቁጥር 1837 ወደ ቅርብ 100 ቤት ሲጠጋ 1900 ይሆናል።",
+                englishPrompt: "True or False: 1837 rounded to the nearest hundred is 1900.",
+                options: [
+                    { id: "T", text: "እውነት (True)" },
+                    { id: "F", text: "ሐሰት (False)" }
+                ],
+                correctAnswer: "F",
+                explanation: "ሐሰት ነው። ወደ ቅርብ 100 ቤት ስናጠጋጋ የአስር ቤት አሃዝ 3 ነው (ከ 5 ያነሰ)። ስለዚህ የመቶ ቤቱ 8 ሆኖ ይቀራል፤ ትክክለኛው ውጤት 1800 መሆን አለበት እንጂ 1900 አይሆንም።"
+            },
+            {
+                id: 10,
+                section: "ክፍል 2፡ እውነት ወይም ሐሰት (True or False)",
+                type: "boolean",
+                prompt: "ቁጥር 7288 ወደ ቅርብ 1000 ቤት ሲጠጋ 7000 ይሆናል።",
+                englishPrompt: "True or False: 7288 rounded to the nearest thousand is 7000.",
+                options: [
+                    { id: "T", text: "እውነት (True)" },
+                    { id: "F", text: "ሐሰት (False)" }
+                ],
+                correctAnswer: "T",
+                explanation: "እውነት ነው። ወደ ቅርብ 1000 ቤት ስናጠጋጋ የመቶ ቤት አሃዝ 2 ስለሆነ (ከ 5 ያነሰ) ወደ 7000 ይጠጋጋል።"
+            },
+
+            // PART 3: MULTIPLE CHOICE (30 Items) - RESHUFFLED CHOICES
+            {
+                id: 11,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "1. በ 5437 ውስጥ የመቶ ቤት አሃዝ ስንት ነው?",
+                englishPrompt: "Question 1: In the number 5437, what is the digit in the hundreds place?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 5" },
+                    { id: "ሁ", text: "ሁ) 3" },
+                    { id: "ሐ", text: "ሐ) 4" },
+                    { id: "መ", text: "መ) 7" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "በ 5437 ውስጥ 7 የአንድ ቤት፣ 3 የአስር ቤት፣ 4 የመቶ ቤት እና 5 የሺህ ቤት ናቸው። ስለዚህ የመቶ ቤቱ አሃዝ 4 ነው። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 12,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "2. በ 8086 ውስጥ የአስር ቤት አሃዝ የቤት ዋጋ (Place value) ስንት ነው?",
+                englishPrompt: "Question 2: What is the place value of the tens digit in 8086?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 80" },
+                    { id: "ሁ", text: "ሁ) 800" },
+                    { id: "ሐ", text: "ሐ) 8000" },
+                    { id: "መ", text: "መ) 8" }
+                ],
+                correctAnswer: "ሀ",
+                explanation: "በ 8086 ውስጥ የአስር ቤት አሃዝ 8 ነው። የአስር ቤት ዋጋው ደግሞ 8 × 10 = 80 ነው። ትክክለኛው መልስ 'ሀ' ነው።"
+            },
+            {
+                id: 13,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "3. 657 በሚለው ቁጥር ውስጥ የሺህ ቤት አሃዝ ስንት ነው?",
+                englishPrompt: "Question 3: In the number 657, what is the thousands digit?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 6" },
+                    { id: "ሁ", text: "ሁ) የለውም (0)" },
+                    { id: "ሐ", text: "ሐ) 7" },
+                    { id: "መ", text: "መ) 5" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "657 ባለ 3 አሃዝ ቁጥር ስለሆነ የሺህ ቤት አሃዝ የለውም ወይም 0 ነው። ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 14,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "4. 5 ሺዎች እና 6 መቶዎች የያዘው ቁጥር የትኛው ነው?",
+                englishPrompt: "Question 4: Which number consists of 5 thousands and 6 hundreds?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 5060" },
+                    { id: "ሁ", text: "ሁ) 6500" },
+                    { id: "ሐ", text: "ሐ) 5006" },
+                    { id: "መ", text: "መ) 5600" }
+                ],
+                correctAnswer: "መ",
+                explanation: "5 ሺዎች = 5000፣ 6 መቶዎች = 600፤ ሁለቱን ስንደምራቸው 5600 ይሆናል። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 15,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "5. (6 × 1000) + (7 × 100) + (3 × 10) + 4 የተበተነውን ቁጥር ወደ ተለመደው ቅርፅ ሲቀየር ስንት ይሆናል?",
+                englishPrompt: "Question 5: What is the standard form of (6 × 1000) + (7 × 100) + (3 × 10) + 4?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 6743" },
+                    { id: "ሁ", text: "ሁ) 6374" },
+                    { id: "ሐ", text: "ሐ) 6734" },
+                    { id: "መ", text: "መ) 7634" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "6000 + 700 + 30 + 4 = 6734 ይሆናል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 16,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "6. (2 × 1000) + (5 × 10) + 7 ቁጥር ወደ ተለመደው ቅርፅ ሲጻፍ ስንት ነው?",
+                englishPrompt: "Question 6: What is the standard form of (2 × 1000) + (5 × 10) + 7?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 2057" },
+                    { id: "ሁ", text: "ሁ) 2507" },
+                    { id: "ሐ", text: "ሐ) 2570" },
+                    { id: "መ", text: "መ) 2750" }
+                ],
+                correctAnswer: "ሀ",
+                explanation: "2000 + 50 + 7 = 2057 ይሆናል። የመቶ ቤት አሃዝ 0 ስለሆነ 2057 ይሆናል። ትክክለኛው መልስ 'ሀ' ነው።"
+            },
+            {
+                id: 17,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "7. በ 5437 ውስጥ የሺህ ቤት አሃዝ የቤት ዋጋ ስንት ነው?",
+                englishPrompt: "Question 7: What is the place value of the thousands digit in 5437?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 50" },
+                    { id: "ሁ", text: "ሁ) 500" },
+                    { id: "ሐ", text: "ሐ) 5" },
+                    { id: "መ", text: "መ) 5000" }
+                ],
+                correctAnswer: "መ",
+                explanation: "በ 5437 የሺህ ቤት አሃዝ 5 ነው። የቤት ዋጋው ደግሞ 5 × 1000 = 5000 ነው። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 18,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "8. 657 በሚለው ቁጥር የመቶ ቤት አሃዝ የቤት ዋጋ ስንት ነው?",
+                englishPrompt: "Question 8: In 657, what is the place value of the hundreds digit?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 6" },
+                    { id: "ሁ", text: "ሁ) 600" },
+                    { id: "ሐ", text: "ሐ) 60" },
+                    { id: "መ", text: "መ) 6000" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "በ 657 ውስጥ የመቶ ቤት አሃዝ 6 ነው። የቤት ዋጋው 6 × 100 = 600 ነው። ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 19,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (沟通 Choice)",
+                type: "mcq",
+                prompt: "9. 8086 በሚለው ቁጥር የመቶ ቤት አሃዝ ስንት ነው?",
+                englishPrompt: "Question 9: What is the digit in the hundreds place in 8086?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 8" },
+                    { id: "ሁ", text: "ሁ) 6" },
+                    { id: "ሐ", text: "ሐ) 80" },
+                    { id: "መ", text: "መ) 0" }
+                ],
+                correctAnswer: "መ",
+                explanation: "በ 8086 ውስጥ የመቶ ቤት አሃዙ 0 ነው። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 20,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "10. ከሚከተሉት ቁጥሮች ውስጥ የሆሄያት (አሃዞች) ብዛቱ አነስተኛ የሆነው የትኛው ነው?",
+                englishPrompt: "Question 10: Which of the following numbers has the fewest number of digits?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 34" },
+                    { id: "ሁ", text: "ሁ) 346" },
+                    { id: "ሐ", text: "ሐ) 123" },
+                    { id: "መ", text: "መ) 3477" }
+                ],
+                correctAnswer: "ሀ",
+                explanation: "3477 ባለ 4 አሃዝ ነው፤ 346 እና 123 ባለ 3 አሃዝ ናቸው፤ 34 ግን ባለ 2 አሃዝ ስለሆነ ከሁሉም ያነሰ የአሃዝ ብዛት አለው። ትክክለኛው መልስ 'ሀ' ነው።"
+            },
+            {
+                id: 21,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "11. 346 እና 3477 ሲወዳደሩ ትክክለኛው የማወዳደሪያ ምልክት የትኛው ነው?",
+                englishPrompt: "Question 11: Which comparison symbol correctly compares 346 and 3477?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 346 > 3477" },
+                    { id: "ሁ", text: "ሁ) 346 = 3477" },
+                    { id: "ሐ", text: "ሐ) 346 < 3477" },
+                    { id: "መ", text: "መ) አይወዳደሩም" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "346 ባለ 3 አሃዝ ሲሆን 3477 ባለ 4 አሃዝ ነው። ባለ 3 አሃዝ ቁጥር ከባለ 4 አሃዝ ቁጥር ስለሚያንስ 346 < 3477 ይሆናል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 22,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "12. 4561 እና 2345 ሲወዳደሩ የትኛው ይበልጣል?",
+                englishPrompt: "Question 12: When comparing 4561 and 2345, which one is greater?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 2345" },
+                    { id: "ሁ", text: "ሁ) 4561" },
+                    { id: "ሐ", text: "ሐ) እኩል ናቸው" },
+                    { id: "መ", text: "መ) ሊታወቅ አይችልም" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "ሁለቱም ባለ 4 አሃዝ ናቸው። የ 4561 ከፍተኛው ቤት (የሺህ ቤት) 4 ሲሆን የ 2345 የሺህ ቤት 2 ነው፤ 4 ከ 2 ስለሚበልጥ 4561 ይበልጣል። ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 23,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "13. 4353 ____ 4358 በሚለው ባዶ ቦታ የሚገባው የማወዳደሪያ ምልክት የትኛው ነው?",
+                englishPrompt: "Question 13: Which comparison symbol belongs in the blank for 4353 ____ 4358?",
+                options: [
+                    { id: "ሀ", text: "ሀ) >" },
+                    { id: "ሁ", text: "ሁ) =" },
+                    { id: "ሐ", text: "ሐ) +" },
+                    { id: "መ", text: "መ) <" }
+                ],
+                correctAnswer: "መ",
+                explanation: "ሺህ፣ መቶ እና አስር ቤታቸው እኩል ነው። በአንድ ቤታቸው 3 ከ 8 ስለሚያንስ 4353 < 4358 ይሆናል። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 24,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "14. ከሚከተሉት ቁጥሮች ውስጥ ከሁሉ የሚበልጠው የትኛው ነው?",
+                englishPrompt: "Question 14: Which of the following numbers is the greatest?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 491" },
+                    { id: "ሁ", text: "ሁ) 831" },
+                    { id: "ሐ", text: "ሐ) 591" },
+                    { id: "መ", text: "መ) 521" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "ሁሉንም የመቶ ቤታቸውን ስናወዳድር የ 831 የመቶ ቤት 8 ከሁሉም ትልቅ ነው። ስለዚህ ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 25,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "15. ከሚከተሉት ቁጥሮች ውስጥ ከሁሉ የሚያንሰው የትኛው ነው?",
+                englishPrompt: "Question 15: Which of the following numbers is the smallest?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 7582" },
+                    { id: "ሁ", text: "ሁ) 3598" },
+                    { id: "ሐ", text: "ሐ) 28" },
+                    { id: "መ", text: "መ) 832" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "28 ባለ 2 አሃዝ ቁጥር ስለሆነ ከሌሎቹ ባለ 3 እና ባለ 4 አሃዝ ቁጥሮች ሁሉ ያንሳል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 26,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "16. ቁጥሮችን ከትንሽ ወደ ትልቅ በቅደም ተከተል የማስቀመጥ መንገድ የትኛው ነው?",
+                englishPrompt: "Question 16: What is the arrangement of numbers from smallest to largest called?",
+                options: [
+                    { id: "ሀ", text: "ሀ) ከከፍተኛ ወደ አነስተኛ" },
+                    { id: "ሁ", text: "ሁ) በዘፈቀደ" },
+                    { id: "ሐ", text: "ሐ) ከአነስተኛ ወደ ከፍተኛ" },
+                    { id: "መ", text: "መ) መልሱ የለም" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "ከትንሽ ወደ ትልቅ ቁጥሮችን ማስተካከል ከአነስተኛ ወደ ከፍተኛ (Ascending order) ይባላል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 27,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "17. ከሚከተሉት ውስጥ ከትልቅ ወደ ትንሽ (ከከፍተኛ ወደ አነስተኛ) የተቀመጠው ቅደም ተከተል የትኛው ነው?",
+                englishPrompt: "Question 17: Which option shows numbers sorted from greatest to least (descending order)?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 1986, 487, 425" },
+                    { id: "ሁ", text: "ሁ) 345, 389, 425" },
+                    { id: "ሐ", text: "ሐ) 125, 999, 1000" },
+                    { id: "መ", text: "መ) 28, 832, 3598" }
+                ],
+                correctAnswer: "ሀ",
+                explanation: "1986 > 487 > 425 በመሆኑ ከትልቅ ወደ ትንሽ የተቀመጠው 'ሀ' ነው። ሌሎቹ አማራጮች ከአነስተኛ ወደ ከፍተኛ ናቸው።"
+            },
+            {
+                id: 28,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "18. 2364 ወደ ቅርብ 10 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 18: What is 2364 rounded to the nearest ten?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 2370" },
+                    { id: "ሁ", text: "ሁ) 2400" },
+                    { id: "ሐ", text: "ሐ) 2300" },
+                    { id: "መ", text: "መ) 2360" }
+                ],
+                correctAnswer: "መ",
+                explanation: "የአንድ ቤት አሃዝ 4 ነው (ከ 5 ያነሰ)። ስለዚህ የአስር ቤቱ ሳይለወጥ 6 ሆኖ ይቀራል፤ 2360 ይሆናል። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 29,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "19. 5678 ወደ ቅርብ 10 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 19: What is 5678 rounded to the nearest ten?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 5670" },
+                    { id: "ሁ", text: "ሁ) 5680" },
+                    { id: "ሐ", text: "ሐ) 5700" },
+                    { id: "መ", text: "መ) 5600" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "የአንድ ቤት አሃዝ 8 ነው (5 እና ከዚያ በላይ)፤ ስለዚህ ለአስር ቤት 1 ይጨመራል (7 + 1 = 8)፤ 5680 ይሆናል። ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 30,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "20. 4681 ወደ ቅርብ 100 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 20: What is 4681 rounded to the nearest hundred?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 4600" },
+                    { id: "ሁ", text: "ሁ) 5000" },
+                    { id: "ሐ", text: "ሐ) 4700" },
+                    { id: "መ", text: "መ) 4680" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "ወደ ቅርብ 100 ቤት ስናጠጋ የአስር ቤቱ አሃዝ 8 ስለሆነ (ከ 5 በላይ) ለመቶ ቤቱ 1 ይጨመራል (6 + 1 = 7)፤ 4700 ይሆናል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 31,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "21. 1837 ወደ ቅርብ 100 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 21: What is 1837 rounded to the nearest hundred?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 1900" },
+                    { id: "ሁ", text: "ሁ) 1840" },
+                    { id: "ሐ", text: "ሐ) 2000" },
+                    { id: "መ", text: "መ) 1800" }
+                ],
+                correctAnswer: "መ",
+                explanation: "የአስር ቤት አሃዝ 3 ነው (ከ 5 ያነሰ)። ስለዚህ የመቶ ቤቱ አይቀየርም 8 ሆኖ ይቀራል፤ 1800 ይሆናል። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 32,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "22. 3678 ወደ ቅርብ 1000 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 22: What is 3678 rounded to the nearest thousand?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 4000" },
+                    { id: "ሁ", text: "ሁ) 3700" },
+                    { id: "ሐ", text: "ሐ) 3000" },
+                    { id: "መ", text: "መ) 3600" }
+                ],
+                correctAnswer: "ሀ",
+                explanation: "ወደ ቅርብ 1000 ቤት ስናጠጋጋ የመቶ ቤት አሃዝ 6 ስለሆነ (ከ 5 በላይ) ለሺህ ቤቱ 1 ይጨመራል (3 + 1 = 4)፤ 4000 ይሆናል። ትክክለኛው መልስ 'ሀ' ነው።"
+            },
+            {
+                id: 33,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "23. 7288 ወደ ቅርብ 1000 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 23: What is 7288 rounded to the nearest thousand?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 8000" },
+                    { id: "ሁ", text: "ሁ) 7000" },
+                    { id: "ሐ", text: "ሐ) 7300" },
+                    { id: "መ", text: "መ) 7200" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "የመቶ ቤት አሃዝ 2 ስለሆነ (ከ 5 ያነሰ) የሺህ ቤቱ 7 ሆኖ ይቀራል፤ 7000 ይሆናል። ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 34,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "24. 6789 ወደ ቅርብ 1000 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 24: What is 6789 rounded to the nearest thousand?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 6000" },
+                    { id: "ሁ", text: "ሁ) 6800" },
+                    { id: "ሐ", text: "ሐ) 6790" },
+                    { id: "መ", text: "መ) 7000" }
+                ],
+                correctAnswer: "መ",
+                explanation: "የመቶ ቤት አሃዝ 7 ስለሆነ (ከ 5 በላይ) ለሺህ ቤት 1 ይጨመራል (6 + 1 = 7)፤ 7000 ይሆናል። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 35,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "25. 4327 ወደ ቅርብ 100 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 25: What is 4327 rounded to the nearest hundred?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 4330" },
+                    { id: "ሁ", text: "ሁ) 4400" },
+                    { id: "ሐ", text: "ሐ) 4300" },
+                    { id: "መ", text: "መ) 4000" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "የአስር ቤት አሃዝ 2 ነው (ከ 5 ያነሰ)፤ ስለዚህ የመቶ ቤቱ ሳይለወጥ 3 ሆኖ ይቀራል፤ 4300 ይሆናል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 36,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "26. 2149 ወደ ቅርብ 10 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 26: What is 2149 rounded to the nearest ten?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 2150" },
+                    { id: "ሁ", text: "ሁ) 2140" },
+                    { id: "ሐ", text: "ሐ) 2100" },
+                    { id: "መ", text: "መ) 2200" }
+                ],
+                correctAnswer: "ሀ",
+                explanation: "የአንድ ቤት አሃዝ 9 ነው (ከ 5 በላይ)፤ ስለዚህ ለአስር ቤቱ 1 ይጨመራል (4 + 1 = 5)፤ 2150 ይሆናል። ትክክለኛው መልስ 'ሀ' ነው።"
+            },
+            {
+                id: 37,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "27. 2149 ወደ ቅርብ 100 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 27: What is 2149 rounded to the nearest hundred?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 2200" },
+                    { id: "ሁ", text: "ሁ) 2150" },
+                    { id: "ሐ", text: "ሐ) 2100" },
+                    { id: "መ", text: "መ) 2000" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "የአስር ቤት አሃዝ 4 ነው (ከ 5 ያነሰ)፤ ስለዚህ የመቶ ቤቱ 1 ሆኖ ይቀራል፤ 2100 ይሆናል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 38,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "28. 2149 ወደ ቅርብ 1000 ቤት ሲጠጋ ስንት ይሆናል?",
+                englishPrompt: "Question 28: What is 2149 rounded to the nearest thousand?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 3000" },
+                    { id: "ሁ", text: "ሁ) 2000" },
+                    { id: "ሐ", text: "ሐ) 2100" },
+                    { id: "መ", text: "መ) 2150" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "የመቶ ቤት አሃዝ 1 ነው (ከ 5 ያነሰ)፤ ስለዚህ የሺህ ቤቱ 2 ሆኖ ይቀራል፤ 2000 ይሆናል። ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 39,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "29. ቁጥርን በ 100 ቤት ስናጠጋጋ የአስር ቤት ሆሄ ከ 5 ካነሰ የአንድ እና የአስር ቤቶች በምን ይተካሉ?",
+                englishPrompt: "Question 29: When rounding to the nearest hundred, if the tens digit is less than 5, what do the ones and tens digits become?",
+                options: [
+                    { id: "ሀ", text: "ሀ) በ 1" },
+                    { id: "ሁ", text: "ሁ) በ 5" },
+                    { id: "ሐ", text: "ሐ) አይቀየሩም" },
+                    { id: "መ", text: "መ) በ 0" }
+                ],
+                correctAnswer: "መ",
+                explanation: "በማንኛውም የማጠጋጋት ህግ ወደ ቅርብ መቶ ቤት ስናጠጋጋ ከእርሱ በስተቀኝ ያሉት የአስር እና የአንድ ቤት አሃዞች ሁለቱም በ 0 (ዜሮ) ይተካሉ። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 40,
+                section: "ክፍል 3፡ ምርጫ ጥያቄዎች (Multiple Choice)",
+                type: "mcq",
+                prompt: "30. ቁጥርን በ 1000 ቤት ስናጠጋጋ የመቶ ቤት ሆሄ 5 እና ከ 5 በላይ ከሆነ ለሺህ ቤት ስንት እንጨምራለን?",
+                englishPrompt: "Question 30: When rounding to the nearest thousand, if the hundreds digit is 5 or more, how much do we add to the thousands digit?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 1" },
+                    { id: "ሁ", text: "ሁ) 100" },
+                    { id: "ሐ", text: "ሐ) 5" },
+                    { id: "መ", text: "መ) 10" }
+                ],
+                correctAnswer: "ሀ",
+                explanation: "የመቶ ቤት አሃዝ 5 ወይም ከዚያ በላይ ከሆነ ለሚቀጥለው የሺህ ቤት አሃዝ 1 (አንድ) ይደመራል። ትክክለኛው መልስ 'ሀ' ነው።"
+            },
+
+            // PART 4: EXTENDED COMPUTATIONAL & WORD ITEMS (Questions 31 to 36) - RESHUFFLED
+            {
+                id: 41,
+                section: "ክፍል 4፡ በቃላት የተሰጡ ቁጥሮችን በአሐዝ መጻፍ (ጥያቄ 31 ሀ)",
+                type: "mcq",
+                prompt: "31 (ሀ) 'ሁለት መቶ አምስት ሺ አስራ አራት' በአሃዝ ሲጻፍ ስንት ነው?",
+                englishPrompt: "Question 31 A: Write two hundred five thousand fourteen in numbers.",
+                options: [
+                    { id: "ሀ", text: "ሀ) 250,014" },
+                    { id: "ሁ", text: "ሁ) 205,140" },
+                    { id: "ሐ", text: "ሐ) 205,014" },
+                    { id: "መ", text: "መ) 25,014" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "ሁለት መቶ አምስት ሺህ (205,000) ሲደመር አስራ አራት (14) = 205,014 ይሆናል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 42,
+                section: "ክፍል 4፡ በቃላት የተሰጡ ቁጥሮችን በአሐዝ መጻፍ (ጥያቄ 31 ለ)",
+                type: "mcq",
+                prompt: "31 (ለ) 'አንድ መቶ ስድስት ሺ አስር' በአሃዝ ሲጻፍ ስንት ነው?",
+                englishPrompt: "Question 31 B: Write one hundred six thousand ten in numbers.",
+                options: [
+                    { id: "ሀ", text: "ሀ) 160,010" },
+                    { id: "ሁ", text: "ሁ) 106,010" },
+                    { id: "ሐ", text: "ሐ) 106,100" },
+                    { id: "መ", text: "መ) 16,010" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "አንድ መቶ ስድስት ሺህ (106,000) ሲደመር አስር (10) = 106,010 ይሆናል። ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 43,
+                section: "ክፍል 4፡ በቃላት የተሰጡ ቁጥሮችን በአሐዝ መጻፍ (ጥያቄ 31 ሐ)",
+                type: "mcq",
+                prompt: "31 (ሐ) 'ሁለት ሺ አስራ አንድ' በአሃዝ ሲጻፍ ስንት ነው?",
+                englishPrompt: "Question 31 C: Write two thousand eleven in numbers.",
+                options: [
+                    { id: "ሀ", text: "ሀ) 2110" },
+                    { id: "ሁ", text: "ሁ) 2101" },
+                    { id: "ሐ", text: "ሐ) 20,011" },
+                    { id: "መ", text: "መ) 2011" }
+                ],
+                correctAnswer: "መ",
+                explanation: "ሁለት ሺህ (2000) ሲደመር አስራ አንድ (11) = 2011 ይሆናል። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 44,
+                section: "ክፍል 4፡ በቃላት የተሰጡ ቁጥሮችን በአሐዝ መጻፍ (ጥያቄ 31 መ)",
+                type: "mcq",
+                prompt: "31 (መ) 'አስራ አራት ሺ አስራ አራት' በአሃዝ ሲጻፍ ስንት ነው?",
+                englishPrompt: "Question 31 D: Write fourteen thousand fourteen in numbers.",
+                options: [
+                    { id: "ሀ", text: "ሀ) 14,014" },
+                    { id: "ሁ", text: "ሁ) 140,014" },
+                    { id: "ሐ", text: "ሐ) 14,140" },
+                    { id: "መ", text: "መ) 14,004" }
+                ],
+                correctAnswer: "ሀ",
+                explanation: "አስራ አራት ሺህ (14,000) + አስራ አራት (14) = 14,014 ይሆናል። ትክክለኛው መልስ 'ሀ' ነው።"
+            },
+            {
+                id: 45,
+                section: "ክፍል 4፡ ትንትን ቁጥሮችን በአሐዝ መጻፍ (ጥያቄ 32)",
+                type: "mcq",
+                prompt: "32 (ሀ) (3 × 10,000) + (4 × 100) + 4 ሲሰላ ስንት ይሆናል?",
+                englishPrompt: "Question 32 A: What is (3 × 10,000) + (4 × 100) + 4?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 3,404" },
+                    { id: "ሁ", text: "ሁ) 30,404" },
+                    { id: "ሐ", text: "ሐ) 34,004" },
+                    { id: "መ", text: "መ) 30,044" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "3 × 10,000 = 30,000፤ 4 × 100 = 400፤ ሲደመር 4 = 30,404 ይሆናል። ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 46,
+                section: "ክፍል 4፡ ትንትን ቁጥሮችን በአሐዝ መጻፍ (ጥያቄ 32)",
+                type: "mcq",
+                prompt: "32 (ለ) (6 × 10,000) + (4 × 1000) + (4 × 10) ሲሰላ ስንት ይሆናል?",
+                englishPrompt: "Question 32 B: What is (6 × 10,000) + (4 × 1000) + (4 × 10)?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 64,400" },
+                    { id: "ሁ", text: "ሁ) 60,440" },
+                    { id: "ሐ", text: "ሐ) 64,440" },
+                    { id: "መ", text: "መ) 64,040" }
+                ],
+                correctAnswer: "መ",
+                explanation: "60,000 + 4,000 + 40 = 64,040 ይሆናል። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 47,
+                section: "ክፍል 4፡ ትንትን ቁጥሮችን በአሐዝ መጻፍ (ጥያቄ 32)",
+                type: "mcq",
+                prompt: "32 (ሐ) (7 × 10,000) + (8 × 1000) + (4 × 10) + 5 ሲሰላ ስንት ይሆናል?",
+                englishPrompt: "Question 32 C: What is (7 × 10,000) + (8 × 1000) + (4 × 10) + 5?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 78,045" },
+                    { id: "ሁ", text: "ሁ) 78,405" },
+                    { id: "ሐ", text: "ሐ) 78,450" },
+                    { id: "መ", text: "መ) 70,845" }
+                ],
+                correctAnswer: "ሀ",
+                explanation: "70,000 + 8,000 + 40 + 5 = 78,045 ይሆናል። የመቶ ቤት አሃዝ 0 ነው። ትክክለኛው መልስ 'ሀ' ነው።"
+            },
+            {
+                id: 48,
+                section: "ክፍል 4፡ በመተንተን መቀነስ (ጥያቄ 33 - 1)",
+                type: "mcq",
+                prompt: "33 (1-ሀ) 3,458 - 347 ሲቀነስ ውጤቱ ስንት ይሆናል?",
+                englishPrompt: "Question 33 (1-A): What is 3,458 minus 347?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 3,101" },
+                    { id: "ሁ", text: "ሁ) 3,121" },
+                    { id: "ሐ", text: "ሐ) 3,111" },
+                    { id: "መ", text: "መ) 3,211" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "አሃዞችን በቤት በቤታቸው በመተንተን ስንቀንስ፡ 8 - 7 = 1፣ 50 - 40 = 10፣ 400 - 300 = 100፣ 3000 - 0 = 3000። በአንድ ላይ 3,111 ይሆናል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 49,
+                section: "ክፍል 4፡ ቁልቁል መቀነስ (ጥያቄ 33 - 2)",
+                type: "mcq",
+                prompt: "33 (2-ሀ) 7854 - 347 ቁልቁል ሲቀነስ ውጤቱ ስንት ነው?",
+                englishPrompt: "Question 33 (2-A): What is 7854 minus 347 calculated vertically?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 7,517" },
+                    { id: "ሁ", text: "ሁ) 7,497" },
+                    { id: "ሐ", text: "ሐ) 7,511" },
+                    { id: "መ", text: "መ) 7,507" }
+                ],
+                correctAnswer: "መ",
+                explanation: "7854 - 347: ከአስር ቤት 1 ስንዋስ 14 - 7 = 7፤ 4 - 4 = 0፤ 8 - 3 = 5፤ 7 - 0 = 7። ውጤቱ 7,507 ይሆናል። ትክክለኛው መልስ 'መ' ነው።"
+            },
+            {
+                id: 50,
+                section: "ክፍል 4፡ ቁልቁል ማባዛት (ጥያቄ 33 - 3)",
+                type: "mcq",
+                prompt: "33 (3-ሀ) 7854 × 6 ቁልቁል ሲባዛ ውጤቱ ስንት ይሆናል?",
+                englishPrompt: "Question 33 (3-A): Calculate 7854 multiplied by 6.",
+                options: [
+                    { id: "ሀ", text: "ሀ) 46,124" },
+                    { id: "ሁ", text: "ሁ) 47,124" },
+                    { id: "ሐ", text: "ሐ) 47,024" },
+                    { id: "መ", text: "መ) 48,124" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "4 × 6 = 24 (4 ጽፈን 2 አለን)፤ 5 × 6 = 30 + 2 = 32 (2 ጽፈን 3 አለን)፤ 8 × 6 = 48 + 3 = 51 (1 ጽፈን 5 አለን)፤ 7 × 6 = 42 + 5 = 47። ውጤቱ 47,124 ይሆናል። ትክክለኛው መልስ 'ሁ' ነው።"
+            },
+            {
+                id: 51,
+                section: "ክፍል 4፡ ቁልቁል ማባዛት (ጥያቄ 33 - 3)",
+                type: "mcq",
+                prompt: "33 (3-ሐ) 3,000 × 6 ሲባዛ ውጤቱ ስንት ነው?",
+                englishPrompt: "Question 33 (3-C): What is 3,000 multiplied by 6?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 1,800" },
+                    { id: "ሁ", text: "ሁ) 180,000" },
+                    { id: "ሐ", text: "ሐ) 18,000" },
+                    { id: "መ", text: "መ) 9,000" }
+                ],
+                correctAnswer: "ሐ",
+                explanation: "3 × 6 = 18 ሲሆን ሦስቱን ዜሮዎች ወደ ቀኝ ስንጨምር 18,000 ይሆናል። ትክክለኛው መልስ 'ሐ' ነው።"
+            },
+            {
+                id: 52,
+                section: "ክፍል 4፡ ቁልቁል መደመር (ጥያቄ 33 - 4)",
+                type: "mcq",
+                prompt: "33 (4-ሐ) 4,334 + 5,666 ቁልቁል ሲደመር ስንት ይሆናል?",
+                englishPrompt: "Question 33 (4-C): What is the sum of 4,334 and 5,666?",
+                options: [
+                    { id: "ሀ", text: "ሀ) 9,990" },
+                    { id: "ሁ", text: "ሁ) 10,000" },
+                    { id: "ሐ", text: "ሐ) 10,100" },
+                    { id: "መ", text: "መ) 9,000" }
+                ],
+                correctAnswer: "ሁ",
+                explanation: "4 + 6 = 10 (0 ጽፈን 1 አለን)፤ 3 + 6 + 1 = 10 (0 ጽፈን 1 አለን)፤ 3 + 6 + 1 = 10 (0 ጽፈን 1 አለን)፤ 4 + 5 + 1 = 10። ድምሩ በትክክል 10,000 ይሆናል። ትክክለኛው መልስ 'ሁ' ነው።"
+            }
+        ];
+
+        // Application State
+        let studentProfile = {
+            fullName: "",
+            studentId: "",
+            assessmentDate: ""
+        };
+
+        let currentIndex = 0;
+        let userResponses = {}; // Key: question index, Value: { selectedOption, isCorrect }
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let isVoiceEnabled = true;
+        let selectedBritishVoice = null;
+
+        // Initialize Speech Synthesis for British Accent Narrator
+        function initVoiceNarrator() {
+            if (!('speechSynthesis' in window)) {
+                console.log("Speech synthesis not supported.");
+                return;
+            }
+
+            function loadVoices() {
+                const voices = window.speechSynthesis.getVoices();
+                // Filter for British English voices, prioritizing female voices (e.g., "Google UK English Female", "en-GB")
+                const ukVoices = voices.filter(v => v.lang === 'en-GB' || v.lang === 'en_GB');
+                const ukFemale = ukVoices.find(v => 
+                    v.name.toLowerCase().includes('female') || 
+                    v.name.toLowerCase().includes('serena') || 
+                    v.name.toLowerCase().includes('kate') ||
+                    v.name.toLowerCase().includes('libby') ||
+                    v.name.toLowerCase().includes('george') === false
+                );
+
+                selectedBritishVoice = ukFemale || ukVoices[0] || voices.find(v => v.lang.startsWith('en')) || null;
+            }
+
+            loadVoices();
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = loadVoices;
+            }
+        }
+
+        function speakText(text) {
+            if (!isVoiceEnabled || !('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel(); // Stop active speech
+                const utterance = new SpeechSynthesisUtterance(text);
+                if (selectedBritishVoice) {
+                    utterance.voice = selectedBritishVoice;
+                }
+                utterance.lang = 'en-GB';
+                utterance.pitch = 1.1; // Slightly higher pitch for clear pleasant female voice
+                utterance.rate = 0.92;  // Slightly deliberate rate for young students
+                window.speechSynthesis.speak(utterance);
+            } catch (err) {
+                console.error("Speech error:", err);
+            }
+        }
+
+        function toggleSpeech() {
+            isVoiceEnabled = !isVoiceEnabled;
+            const icon = document.getElementById("voiceIcon");
+            const btn = document.getElementById("voiceToggleBtn");
+            const label = document.getElementById("voiceStatusText");
+
+            if (isVoiceEnabled) {
+                btn.className = "flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition shadow-sm";
+                icon.className = "fa-solid fa-volume-high";
+                label.textContent = "Narrator (UK Female): ON";
+                speakText("Voice narrator activated. Good luck with your math assessment.");
+            } else {
+                window.speechSynthesis.cancel();
+                btn.className = "flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200 transition shadow-sm";
+                icon.className = "fa-solid fa-volume-xmark";
+                label.textContent = "Narrator: OFF";
+            }
+        }
+
+        // Narrate Question in English for Accessibility
+        function narrateCurrentQuestion() {
+            const q = quizData[currentIndex];
+            const narration = `${q.section}. Question ${currentIndex + 1}: ${q.englishPrompt || q.prompt}`;
+            speakText(narration);
+        }
+
+        // START ASSESSMENT
+        function startAssessment(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById("studentNameInput").value.trim();
+            const idInput = document.getElementById("studentIdInput").value.trim();
+
+            if (!nameInput || !idInput) {
+                showModal("ስህተት", "እባክዎ የተማሪውን ሙሉ ስም እና የመለያ ቁጥር ያስገቡ።", "fas fa-triangle-exclamation text-rose-500", [
+                    { label: "ተረዳሁ", primary: true, onClick: closeModal }
+                ]);
+                return;
+            }
+
+            studentProfile.fullName = nameInput;
+            studentProfile.studentId = idInput;
+            studentProfile.assessmentDate = new Date().toLocaleString();
+
+            // Set Header pill
+            document.getElementById("pillName").textContent = studentProfile.fullName;
+            document.getElementById("studentPill").classList.remove("hidden");
+
+            // Switch Views
+            document.getElementById("registrationView").classList.add("hidden");
+            document.getElementById("quizView").classList.remove("hidden");
+            document.getElementById("quizView").classList.add("flex");
+
+            // Setup questions
+            document.getElementById("totalQuestionsNum").textContent = quizData.length;
+            renderQuestionPalette();
+            loadQuestion(0);
+
+            // Audio Welcome
+            speakText(`Welcome ${studentProfile.fullName}. Let us begin the Grade 3 Mathematics Assessment. Question 1.`);
+        }
+
+        // RENDER QUESTION
+        function loadQuestion(index) {
+            currentIndex = index;
+            const q = quizData[currentIndex];
+
+            // Update Progress & Nav
+            document.getElementById("currentQuestionNum").textContent = currentIndex + 1;
+            document.getElementById("sectionBadge").textContent = q.section;
+            document.getElementById("questionCategoryTitle").textContent = q.section;
+            document.getElementById("questionPrompt").textContent = q.prompt;
+
+            // Update Palette Active State
+            updatePaletteUI();
+
+            // Progress bar
+            const percent = Math.round(((currentIndex) / quizData.length) * 100);
+            document.getElementById("progressBar").style.width = `${percent}%`;
+            document.getElementById("progressPercent").textContent = `${percent}%`;
+
+            // Back button disability
+            document.getElementById("prevBtn").disabled = (currentIndex === 0);
+
+            // Hide or show Submit vs Next
+            if (currentIndex === quizData.length - 1) {
+                document.getElementById("nextBtn").classList.add("hidden");
+                document.getElementById("submitExamBtn").classList.remove("hidden");
+            } else {
+                document.getElementById("nextBtn").classList.remove("hidden");
+                document.getElementById("submitExamBtn").classList.add("hidden");
+            }
+
+            // Interactive Options Area
+            const container = document.getElementById("interactiveArea");
+            container.innerHTML = "";
+
+            const existingAnswer = userResponses[currentIndex];
+
+            // Render Choices
+            q.options.forEach((opt) => {
+                const btn = document.createElement("button");
+                btn.className = `w-full text-left p-4 rounded-2xl border-2 transition-all duration-200 flex items-center justify-between group ethiopic text-sm sm:text-base font-medium`;
+                
+                // If question is already answered, show instant feedback states (IRREVERSIBLE)
+                if (existingAnswer) {
+                    btn.disabled = true; // Lock
+                    if (opt.id === q.correctAnswer) {
+                        btn.className += " border-emerald-500 bg-emerald-50/80 text-emerald-950 font-semibold ring-2 ring-emerald-300";
+                    } else if (opt.id === existingAnswer.selectedOption && !existingAnswer.isCorrect) {
+                        btn.className += " border-rose-500 bg-rose-50/80 text-rose-950 ring-2 ring-rose-200 line-through";
+                    } else {
+                        btn.className += " border-slate-200 bg-slate-50/50 text-slate-400 opacity-60";
+                    }
+                } else {
+                    btn.className += " border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/30 text-slate-700 bg-white shadow-xs cursor-pointer";
+                    btn.onclick = () => selectAnswer(opt.id);
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold ${
+                            existingAnswer && opt.id === q.correctAnswer ? 'bg-emerald-600 text-white' :
+                            existingAnswer && opt.id === existingAnswer.selectedOption && !existingAnswer.isCorrect ? 'bg-rose-600 text-white' :
+                            'bg-slate-100 text-slate-600 group-hover:bg-indigo-600 group-hover:text-white'
+                        } transition">
+                            ${opt.id}
+                        </span>
+                        <span>${opt.text}</span>
+                    </div>
+                    <div>
+                        ${
+                            existingAnswer && opt.id === q.correctAnswer ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' :
+                            existingAnswer && opt.id === existingAnswer.selectedOption && !existingAnswer.isCorrect ? '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>' :
+                            '<i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-indigo-500 transition text-sm"></i>'
+                        }
+                    </div>
+                `;
+                container.appendChild(btn);
+            });
+
+            // Handle Explanation and Feedback Container
+            const explanationBox = document.getElementById("explanationContainer");
+            if (existingAnswer) {
+                renderExplanation(existingAnswer.isCorrect, q);
+                explanationBox.classList.remove("hidden");
+            } else {
+                explanationBox.classList.add("hidden");
+            }
+        }
+
+        // INSTANT FEEDBACK & ANSWER SELECTION (IRREVERSIBLE)
+        function selectAnswer(optionId) {
+            if (userResponses[currentIndex] !== undefined) return; // Prevent double selecting
+
+            const q = quizData[currentIndex];
+            const isCorrect = (optionId === q.correctAnswer);
+
+            userResponses[currentIndex] = {
+                selectedOption: optionId,
+                isCorrect: isCorrect
+            };
+
+            if (isCorrect) {
+                correctCount++;
+                document.getElementById("correctCounter").textContent = correctCount;
+                speakText("Correct answer. Well done!");
+            } else {
+                incorrectCount++;
+                document.getElementById("incorrectCounter").textContent = incorrectCount;
+                speakText(`Incorrect. The correct answer was option ${q.correctAnswer}.`);
+            }
+
+            // Immediately reload question view to show feedback & lock inputs
+            loadQuestion(currentIndex);
+        }
+
+        function renderExplanation(isCorrect, question) {
+            const banner = document.getElementById("feedbackBanner");
+            const expText = document.getElementById("explanationText");
+
+            if (isCorrect) {
+                banner.className = "p-4 rounded-2xl flex items-start gap-3.5 mb-3 bg-emerald-50 border border-emerald-200 text-emerald-900";
+                banner.innerHTML = `
+                    <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm ethiopic">ትክክል ነው! (Correct!)</h4>
+                        <p class="text-xs text-emerald-800 ethiopic mt-0.5">የመረጡት መልስ ትክክል ነው። ቀጣዩን ጥያቄ ለመቀጠል 'ቀጣይ' የሚለውን ይጫኑ።</p>
+                    </div>
+                `;
+            } else {
+                banner.className = "p-4 rounded-2xl flex items-start gap-3.5 mb-3 bg-rose-50 border border-rose-200 text-rose-900";
+                banner.innerHTML = `
+                    <div class="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm ethiopic">ስህተት ነው! (Incorrect!)</h4>
+                        <p class="text-xs text-rose-800 ethiopic mt-0.5">ትክክለኛው መልስ <strong>ምርጫ '${question.correctAnswer}'</strong> ነው። ከዚህ በታች ያለውን ማብራሪያ ያንብቡ።</p>
+                    </div>
+                `;
+            }
+
+            expText.innerHTML = `<p class="leading-relaxed">${question.explanation}</p>`;
+        }
+
+        // NAVIGATION CONTROLS
+        function navigateQuestion(step) {
+            const nextIdx = currentIndex + step;
+            if (nextIdx >= 0 && nextIdx < quizData.length) {
+                loadQuestion(nextIdx);
+            }
+        }
+
+        function skipQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                loadQuestion(currentIndex + 1);
+            } else {
+                showModal("ማስታወሻ", "ይህ የመጨረሻው ጥያቄ ነው፤ እባክዎ ፈተናውን ይጨርሱ።", "fa-solid fa-info-circle text-indigo-500", [
+                    { label: "እሺ", primary: true, onClick: closeModal }
+                ]);
+            }
+        }
+
+        // QUESTION PALETTE
+        function renderQuestionPalette() {
+            const grid = document.getElementById("questionGrid");
+            grid.innerHTML = "";
+
+            quizData.forEach((_, idx) => {
+                const btn = document.createElement("button");
+                btn.id = `palette-btn-${idx}`;
+                btn.textContent = idx + 1;
+                btn.className = "w-8 h-8 rounded-lg text-xs font-bold transition flex items-center justify-center border border-slate-200 bg-white text-slate-600 hover:border-indigo-400";
+                btn.onclick = () => loadQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function updatePaletteUI() {
+            quizData.forEach((_, idx) => {
+                const btn = document.getElementById(`palette-btn-${idx}`);
+                if (!btn) return;
+
+                const response = userResponses[idx];
+                if (idx === currentIndex) {
+                    btn.className = "w-8 h-8 rounded-lg text-xs font-black ring-2 ring-indigo-500 bg-indigo-600 text-white border-transparent";
+                } else if (response) {
+                    if (response.isCorrect) {
+                        btn.className = "w-8 h-8 rounded-lg text-xs font-bold bg-emerald-500 text-white border-transparent";
+                    } else {
+                        btn.className = "w-8 h-8 rounded-lg text-xs font-bold bg-rose-500 text-white border-transparent";
+                    }
+                } else {
+                    btn.className = "w-8 h-8 rounded-lg text-xs font-medium border border-slate-200 bg-white text-slate-600 hover:bg-slate-100";
+                }
+            });
+        }
+
+        // SUBMIT ASSESSMENT MODAL
+        function submitAssessmentModal() {
+            const answeredCount = Object.keys(userResponses).length;
+            const remaining = quizData.length - answeredCount;
+
+            let warningText = `ሁሉንም ${quizData.length} ጥያቄዎች መልሰዋል። ፈተናውን አጠናቀው ውጤትዎን ማየት ይፈልጋሉ?`;
+            if (remaining > 0) {
+                warningText = `አሁንም ያልተመለሱ ${remaining} ጥያቄዎች አሉ። ፈተናውን አሁን ከጨረሱ ያልተመለሱት እንደ ስህተት ይቆጠራሉ። እርግጠኛ ነዎት?`;
+            }
+
+            showModal("ምዘናውን መጨረስ (Submit Assessment)", warningText, "fa-solid fa-flag-checkered text-indigo-600", [
+                { label: "ይቅር (Cancel)", primary: false, onClick: closeModal },
+                { label: "ፈተናውን ጨርስ (Submit)", primary: true, onClick: finalizeAssessment }
+            ]);
+        }
+
+        // FINALIZE & COMPUTE SCORES
+        function finalizeAssessment() {
+            closeModal();
+            window.speechSynthesis.cancel();
+
+            const total = quizData.length;
+            const finalScore = correctCount;
+            const wrongScore = total - finalScore;
+            const percentage = Math.round((finalScore / total) * 100);
+
+            // Populate Results UI
+            document.getElementById("resTotalQ").textContent = total;
+            document.getElementById("resCorrectQ").textContent = finalScore;
+            document.getElementById("resWrongQ").textContent = wrongScore;
+            document.getElementById("resPercentage").textContent = `${percentage}%`;
+
+            document.getElementById("resStudentName").textContent = studentProfile.fullName;
+            document.getElementById("resStudentID").textContent = studentProfile.studentId;
+            document.getElementById("resExamDate").textContent = studentProfile.assessmentDate;
+
+            const iconBadge = document.getElementById("resultIconBadge");
+            const headline = document.getElementById("resultFeedbackHeadline");
+
+            if (percentage >= 75) {
+                iconBadge.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl mb-4 shadow-lg bg-emerald-100 text-emerald-600";
+                iconBadge.innerHTML = '<i class="fa-solid fa-award"></i>';
+                headline.textContent = `እንኳን ደስ አለዎት! ከፍተኛ ውጤት አስመዝግበዋል (${percentage}%).`;
+                speakText(`Congratulations ${studentProfile.fullName}. You have successfully passed the Grade 3 Mathematics Assessment with a score of ${percentage} percent.`);
+            } else if (percentage >= 50) {
+                iconBadge.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl mb-4 shadow-lg bg-amber-100 text-amber-600";
+                iconBadge.innerHTML = '<i class="fa-solid fa-thumbs-up"></i>';
+                headline.textContent = `ጥሩ ጥረት ነው! ሆኖም የተወሰኑ ክለሳዎችን ማድረግ ይኖርብዎታል (${percentage}%).`;
+                speakText(`Good effort ${studentProfile.fullName}. You achieved ${percentage} percent. Review the questions to improve your score.`);
+            } else {
+                iconBadge.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl mb-4 shadow-lg bg-rose-100 text-rose-600";
+                iconBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+                headline.textContent = `ተጨማሪ ጥናት ያስፈልግዎታል! የተሳሳቱትን ጥያቄዎች በጥንቃቄ ይከልሱ (${percentage}%).`;
+                speakText(`Assessment completed. Your score is ${percentage} percent. Please study the explanations carefully.`);
+            }
+
+            // Generate Review List
+            buildFullReview();
+
+            // Transition Views
+            document.getElementById("quizView").classList.add("hidden");
+            document.getElementById("resultsView").classList.remove("hidden");
+        }
+
+        // BUILD REVIEW EXPANDABLE ACCORDION
+        function buildFullReview() {
+            const wrapper = document.getElementById("reviewItemsWrapper");
+            wrapper.innerHTML = "";
+
+            quizData.forEach((q, idx) => {
+                const ans = userResponses[idx];
+                const isPassed = ans && ans.isCorrect;
+                const chosen = ans ? ans.selectedOption : "ያልተመለሰ (Skipped)";
+
+                const item = document.createElement("div");
+                item.className = `p-4 rounded-2xl border ${isPassed ? 'border-emerald-200 bg-emerald-50/40' : 'border-rose-200 bg-rose-50/40'}`;
+                item.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${isPassed ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}">
+                                ${idx + 1}
+                            </span>
+                            <span class="text-xs font-bold text-slate-500 uppercase ethiopic">${q.section}</span>
+                        </div>
+                        <span class="text-xs font-bold ${isPassed ? 'text-emerald-700' : 'text-rose-700'} ethiopic">
+                            ${isPassed ? '<i class="fa-solid fa-check"></i> ትክክል' : '<i class="fa-solid fa-xmark"></i> ስህተት'}
+                        </span>
+                    </div>
+                    <p class="text-sm font-bold text-slate-900 mt-2 ethiopic">${q.prompt}</p>
+                    <div class="mt-2 text-xs flex flex-wrap gap-4 text-slate-700 ethiopic">
+                        <span>የተመረጠው መልስ፡ <strong>${chosen}</strong></span>
+                        <span>ትክክለኛው መልስ፡ <strong class="text-emerald-700 font-bold">${q.correctAnswer}</strong></span>
+                    </div>
+                    <div class="mt-2.5 p-2.5 rounded-xl bg-white/80 border border-slate-200 text-xs text-slate-600 ethiopic">
+                        <strong>ማብራሪያ፡</strong> ${q.explanation}
+                    </div>
+                `;
+                wrapper.appendChild(item);
+            });
+        }
+
+        function toggleReviewSection() {
+            const rev = document.getElementById("fullReviewContainer");
+            const btnText = document.getElementById("reviewToggleText");
+            if (rev.classList.contains("hidden")) {
+                rev.classList.remove("hidden");
+                btnText.textContent = "ክለሳውን ደብቅ (Hide Review)";
+            } else {
+                rev.classList.add("hidden");
+                btnText.textContent = "ሁሉንም ጥያቄዎችና ማብራሪያዎች ከልስ (Review Questions)";
+            }
+        }
+
+        // DISPATCH RESULTS VIA EMAIL TO TEACHER: mesayferedegn2@gmail.com
+        function dispatchTeacherEmail() {
+            const teacherEmail = "mesayferedegn2@gmail.com";
+            const total = quizData.length;
+            const percentage = Math.round((correctCount / total) * 100);
+
+            const emailSubject = encodeURIComponent(`Grade 3 Math Assessment Results: ${studentProfile.fullName} (ID: ${studentProfile.studentId})`);
+            
+            let breakdownText = "";
+            quizData.forEach((q, idx) => {
+                const ans = userResponses[idx];
+                const status = ans && ans.isCorrect ? "PASSED (ትክክል)" : "FAILED (ተሳስቷል/ያልተመለሰ)";
+                const chosen = ans ? ans.selectedOption : "NONE";
+                breakdownText += `Q${idx + 1} [${q.section.substring(0, 15)}...]: ${status} | Student Chose: ${chosen} | Correct: ${q.correctAnswer}\n`;
+            });
+
+            const emailBody = encodeURIComponent(
+                `የተማሪ የሂሳብ ምዘና ውጤት ሪፖርት (Grade 3 Mathematics Assessment Report)\n` +
+                `===================================================\n` +
+                `የተማሪ ሙሉ ስም (Student Name): ${studentProfile.fullName}\n` +
+                `የተማሪ መለያ ቁጥር (Student ID): ${studentProfile.studentId}\n` +
+                `ክፍል (Class): Grade 3 (3ኛ ክፍል)\n` +
+                `ቀንና ሰዓት (Date): ${studentProfile.assessmentDate}\n` +
+                `---------------------------------------------------\n` +
+                `አጠቃላይ የፈተና ውጤት:\n` +
+                `ትክክለኛ መልሶች: ${correctCount} / ${total}\n` +
+                `የተሳሳቱ መልሶች: ${total - correctCount} / ${total}\n` +
+                `የመቶኛ ውጤት: ${percentage}%\n` +
+                `---------------------------------------------------\n` +
+                `የእያንዳንዱ ጥያቄ ዝርዝር ሁኔታ:\n\n` +
+                breakdownText +
+                `\n===================================================\n` +
+                `ሪፖርቱ በራስ-ሰር በፈተና አፕሊኬሽኑ የተዘጋጀ ነው።`
+            );
+
+            // Construct standard mailto link
+            const mailtoLink = `mailto:${teacherEmail}?subject=${emailSubject}&body=${emailBody}`;
+
+            // Open user's default email client
+            window.location.href = mailtoLink;
+
+            showModal("ኢሜይል ተዘጋጅቷል", "የውጤት ሪፖርቱ በኢሜይል መላኪያ መተግበሪያዎ ተዘጋጅቷል። እባክዎ 'ላክ' (Send) በማለት ወደ መምህር መሳይ (mesayferedegn2@gmail.com) ይላኩ።", "fa-solid fa-envelope-circle-check text-emerald-600", [
+                { label: "እሺ ተረድቻለሁ", primary: true, onClick: closeModal }
+            ]);
+        }
+
+        // RESTART QUIZ
+        function restartQuiz() {
+            showModal("እንደገና መጀመር", "ፈተናውን እንደገና መጀመር ይፈልጋሉ? ያሁኑ ውጤት ይጠፋል።", "fa-solid fa-rotate-left text-amber-500", [
+                { label: "ይቅር", primary: false, onClick: closeModal },
+                { 
+                    label: "አዎ እንደገና ጀምር", 
+                    primary: true, 
+                    onClick: () => {
+                        closeModal();
+                        userResponses = {};
+                        correctCount = 0;
+                        incorrectCount = 0;
+                        currentIndex = 0;
+                        document.getElementById("correctCounter").textContent = "0";
+                        document.getElementById("incorrectCounter").textContent = "0";
+                        document.getElementById("resultsView").classList.add("hidden");
+                        document.getElementById("registrationView").classList.remove("hidden");
+                        document.getElementById("studentPill").classList.add("hidden");
+                    }
+                }
+            ]);
+        }
+
+        // ACCESSIBLE MODAL DIALOG (REPLACES alert & confirm)
+        function showModal(title, message, iconClass, buttons = []) {
+            const modal = document.getElementById("customModal");
+            document.getElementById("modalTitle").textContent = title;
+            document.getElementById("modalMessage").textContent = message;
+
+            const icon = document.getElementById("modalIcon");
+            icon.className = iconClass || "fa-solid fa-circle-info";
+
+            const btnContainer = document.getElementById("modalButtons");
+            btnContainer.innerHTML = "";
+
+            buttons.forEach(b => {
+                const btn = document.createElement("button");
+                btn.textContent = b.label;
+                btn.className = b.primary 
+                    ? "px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs ethiopic transition shadow-md"
+                    : "px-5 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs ethiopic transition";
+                btn.onclick = b.onClick || closeModal;
+                btnContainer.appendChild(btn);
+            });
+
+            modal.classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("customModal").classList.add("hidden");
+        }
+
+        // INITIALIZE ON WINDOW LOAD
+        window.onload = function() {
+            initVoiceNarrator();
+        };
+    </script>
+</body>
+</html>
